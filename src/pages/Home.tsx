@@ -68,17 +68,17 @@ function Home() {
         <div className="relative h-48">
           <div className="absolute inset-0">
             <img
-              src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?auto=format&fit=crop&w=800"
+              src="https://imgur.com/VwKvwI8.jpeg"
               alt="Couverture Pâtisseries Marocaines"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-rose-900 bg-opacity-30"></div>
           </div>
-          
+
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
             <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg">
               <img
-                src="https://i.imgur.com/NHS3V5b.jpeg"
+                src="https://imgur.com/9j5xOG5.jpeg"
                 alt="Linouta"
                 className="w-full h-full object-cover"
               />
@@ -107,10 +107,11 @@ function Home() {
           <div className="mt-8 space-y-4">
             {/* Pâtisseries Marocaines */}
             <div className="group relative overflow-hidden rounded-xl aspect-video shadow-md hover:shadow-lg transition-all duration-300">
-              <img
-                src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800"
-                alt="Pâtisseries Marocaines"
+              <iframe
+                src="https://streamable.com/e/x7w5y9?autoplay=1&muted=1&loop=1"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                frameBorder="0"
+                allowFullScreen
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
                 <div>
@@ -153,22 +154,22 @@ function Home() {
 
           {/* Informations de Contact */}
           <div className="mt-8 space-y-4">
-            <a href="mailto:linouta.patisserie@gmail.com" 
-               className="flex items-center justify-center space-x-2 text-gray-600 hover:text-rose-600 transition-colors">
+            <a href="mailto:contact.linouta@gmail.com"
+              className="flex items-center justify-center space-x-2 text-gray-600 hover:text-rose-600 transition-colors">
               <Mail className="w-5 h-5" />
-              <span>linouta.patisserie@gmail.com</span>
+              <span>contact.linouta@gmail.com</span>
             </a>
-            <a href="https://linouta.carrd.co"
+            {/* <a href="https://linouta.carrd.co"
                className="flex items-center justify-center space-x-2 text-gray-600 hover:text-rose-600 transition-colors">
               <Globe className="w-5 h-5" />
               <span>linouta.carrd.co</span>
-            </a>
+            </a> */}
           </div>
 
           {/* Réseaux Sociaux */}
           <div className="mt-8 flex justify-center space-x-4">
-            <a href="https://instagram.com/linouta" target="_blank" rel="noopener noreferrer"
-               className="p-3 bg-gradient-to-br from-rose-100 to-rose-200 rounded-full hover:from-rose-200 hover:to-rose-300 transition-colors shadow-sm">
+            <a href="https://www.instagram.com/linouta95?igsh=MXNwOW5wMm10MnB3Ng==" target="_blank" rel="noopener noreferrer"
+              className="p-3 bg-gradient-to-br from-rose-100 to-rose-200 rounded-full hover:from-rose-200 hover:to-rose-300 transition-colors shadow-sm">
               <Instagram className="w-6 h-6 text-rose-600" />
             </a>
           </div>
@@ -310,9 +311,7 @@ function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === 'submitting'}
-                  className={`w-full flex items-center justify-center space-x-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${
-                    formStatus === 'submitting' ? 'opacity-75 cursor-not-allowed' : ''
-                  }`}
+                  className={`w-full flex items-center justify-center space-x-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${formStatus === 'submitting' ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   {formStatus === 'success' ? (
                     <CheckCircle2 className="w-5 h-5 success-animation text-white" />
@@ -321,9 +320,9 @@ function Home() {
                   )}
                   <span className={formStatus === 'success' ? 'success-message' : ''}>
                     {formStatus === 'submitting' ? 'Envoi en cours...' :
-                     formStatus === 'success' ? 'Envoyé !' :
-                     formStatus === 'error' ? 'Erreur, réessayer' :
-                     'Envoyer'}
+                      formStatus === 'success' ? 'Envoyé !' :
+                        formStatus === 'error' ? 'Erreur, réessayer' :
+                          'Envoyer'}
                   </span>
                 </button>
               </div>
