@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import {
@@ -11,7 +11,9 @@ import {
   QrCode,
   X,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  ShoppingBag,
+  Phone
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -26,11 +28,24 @@ function Home() {
     phone: '',
     message: ''
   });
+  const [navigating, setNavigating] = useState(false);
 
   const calendlyUrl = 'https://calendly.com/linouta';
 
-  const handleScheduleMeeting = () => {
+  // Fonction améliorée pour la navigation vers la page de commande
+  const handleOrder = () => {
+    // Évite les clics multiples
+    if (navigating) return;
+    
+    setNavigating(true);
+    
+    // Utilise une navigation standard sans remplacer l'historique
     navigate('/order');
+    
+    // Réinitialise l'état après un court délai
+    setTimeout(() => {
+      setNavigating(false);
+    }, 300);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -159,11 +174,6 @@ function Home() {
               <Mail className="w-5 h-5" />
               <span>contact.linouta@gmail.com</span>
             </a>
-            {/* <a href="https://linouta.carrd.co"
-               className="flex items-center justify-center space-x-2 text-gray-600 hover:text-rose-600 transition-colors">
-              <Globe className="w-5 h-5" />
-              <span>linouta.carrd.co</span>
-            </a> */}
           </div>
 
           {/* Réseaux Sociaux */}
@@ -174,29 +184,39 @@ function Home() {
             </a>
           </div>
 
-          {/* Boutons de Commande */}
-          <div className="mt-8 grid grid-cols-2 gap-4">
+          {/* Bouton de commande principal */}
+          <div className="mt-8">
             <button
-              onClick={handleScheduleMeeting}
-              className="bg-gradient-to-r from-rose-500 to-rose-600 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:from-rose-600 hover:to-rose-700 transition-colors shadow-md hover:shadow-lg"
+              onClick={handleOrder}
+              disabled={navigating}
+              className="w-full bg-gradient-to-r from-rose-500 to-rose-600 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-3 hover:from-rose-600 hover:to-rose-700 transition-colors shadow-md hover:shadow-lg text-lg font-medium"
             >
-              <Calendar className="w-5 h-5" />
-              <span>Commander</span>
+              <ShoppingBag className="w-6 h-6" />
+              <span>Commander maintenant</span>
             </button>
+          </div>
+
+          {/* Message d'information */}
+          <div className="mt-4 bg-rose-50 p-3 rounded-lg border border-rose-200">
+            <p className="text-sm text-rose-700 flex items-start">
+              <Phone className="w-4 h-4 mr-2 mt-1 flex-shrink-0" />
+              <span>Une fois votre commande réservée, nous vous contacterons pour confirmer votre commande et finaliser le paiement.</span>
+            </p>
+          </div>
+
+          {/* Autres boutons */}
+          <div className="mt-4 grid grid-cols-2 gap-4">
             <button
               onClick={() => setShowQRCode(true)}
-              className="bg-gradient-to-r from-rose-500 to-rose-600 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:from-rose-600 hover:to-rose-700 transition-colors shadow-md hover:shadow-lg"
+              className="bg-rose-100 text-rose-600 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-rose-200 transition-colors shadow-sm"
             >
               <QrCode className="w-5 h-5" />
               <span>QR Code</span>
             </button>
-          </div>
-
-          {/* Télécharger vCard */}
-          <div className="mt-4">
+            
             <button
               onClick={() => setShowContactForm(true)}
-              className="w-full bg-gradient-to-r from-rose-50 to-rose-100 text-rose-600 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:from-rose-100 hover:to-rose-200 transition-colors shadow-sm"
+              className="bg-rose-100 text-rose-600 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-rose-200 transition-colors shadow-sm"
             >
               <User className="w-5 h-5" />
               <span>Me contacter</span>
