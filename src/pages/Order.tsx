@@ -57,7 +57,7 @@ function Order() {
   }
 
   const categories = ['Tous', ...new Set(products.map(p => p.category))];
-  
+
   const filteredProducts = activeCategory === 'Tous'
     ? products
     : products.filter(p => p.category === activeCategory);
@@ -97,7 +97,7 @@ function Order() {
           return currentCart.filter(item => item.id !== id);
         }
       }
-      
+
       return currentCart.map(item => {
         if (item.id === id) {
           return { ...item, quantity: item.quantity + change };
@@ -183,14 +183,14 @@ function Order() {
 
   const handleVerifyCode = async (code: string) => {
     setReservationStatus('submitting');
-    
+
     try {
       if (code !== pendingReservationData.code) {
         alert('Code de vérification incorrect');
         setReservationStatus('awaiting_verification');
         return;
       }
-      
+
       const { data: reservationData, error: reservationError } = await supabase
         .from('reservations')
         .insert([{
@@ -202,31 +202,31 @@ function Order() {
         }])
         .select()
         .single();
-  
+
       if (reservationError) throw reservationError;
-  
+
       const reservationItems = pendingReservationData.cart.map((item: CartItem) => ({
         reservation_id: reservationData.id,
         product_id: item.id,
         quantity: item.quantity,
         unit_price: item.price
       }));
-  
+
       const { error: itemsError } = await supabase
         .from('reservation_items')
         .insert(reservationItems);
-  
+
       if (itemsError) throw itemsError;
-  
+
       try {
         const { data: reservationDetails, error: viewError } = await supabase
           .from('reservation_details_view')
           .select('*')
           .eq('reservation_id', reservationData.id)
           .single();
-          
+
         if (viewError) throw viewError;
-        
+
         const webhookResponse = await fetch(
           'https://n8n-7qm2.onrender.com/webhook/b4b58233-dc5d-4cfb-a101-cf84eb19db01', 
           {
@@ -237,21 +237,22 @@ function Order() {
             body: JSON.stringify(reservationDetails)
           }
         );
-        
+
         console.log('Réponse du webhook:', await webhookResponse.text());
-        
+
+
         if (!webhookResponse.ok) {
           console.error('Erreur lors de l\'envoi au webhook:', webhookResponse.statusText);
         }
       } catch (webhookError) {
         console.error('Erreur lors de l\'envoi au webhook:', webhookError);
       }
-  
+
       // Fermer immédiatement le modal
       setCart([]);
       setShowReservationForm(false);
       setReservationStatus('idle');
-      
+
     } catch (error) {
       console.error('Erreur lors de la vérification:', error);
       setReservationStatus('error');
@@ -290,10 +291,10 @@ function Order() {
               </button>
               <h1 className="text-2xl font-semibold text-gray-900">Réserver</h1>
             </div>
-            
+
             {/* Bouton du panier avec badge */}
-            <button 
-              onClick={() => setShowCart(!showCart)} 
+            <button
+              onClick={() => setShowCart(!showCart)}
               className="relative p-2 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 transition-colors"
             >
               <ShoppingCart className="w-6 h-6" />
@@ -366,8 +367,7 @@ function Order() {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                activeCategory === category
+              className={`px-4 py-2 rounded-full text-sm font-medium ${activeCategory === category
                   ? 'bg-rose-600 text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-100'
                 } transition-colors duration-200 shadow-sm`}
@@ -381,7 +381,7 @@ function Order() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map(product => {
             const quantityInCart = getQuantityInCart(product.id);
-            
+
             return (
               <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <img
@@ -394,7 +394,7 @@ function Order() {
                   <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
                   <p className="mt-1 text-sm text-gray-500">{product.description}</p>
                   <p className="mt-2 text-rose-600 font-medium">{product.price}€ / pièce</p>
-                  
+
                   {/* Bouton simplifié avec badge de quantité */}
                   <button
                     onClick={() => addToCart(product)}
@@ -534,9 +534,8 @@ function Order() {
               <button
                 type="submit"
                 disabled={isSubmitting()}
-                className={`w-full flex items-center justify-center space-x-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${
-                  isSubmitting() ? 'opacity-75 cursor-not-allowed' : ''
-                }`}
+                className={`w-full flex items-center justify-center space-x-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${isSubmitting() ? 'opacity-75 cursor-not-allowed' : ''
+                  }`}
               >
                 <Calendar className="w-5 h-5" />
                 <span>
@@ -592,9 +591,8 @@ function Order() {
               <button
                 type="submit"
                 disabled={isSubmitting()}
-                className={`w-full flex items-center justify-center space-x-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${
-                  isSubmitting() ? 'opacity-75 cursor-not-allowed' : ''
-                }`}
+                className={`w-full flex items-center justify-center space-x-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 ${isSubmitting() ? 'opacity-75 cursor-not-allowed' : ''
+                  }`}
               >
                 <span>
                   {isSubmitting() ? 'Traitement en cours...' : 'Vérifier et confirmer'}
